@@ -107,16 +107,25 @@ public:
             const Entry     search(const std::string &key);
             void            dump(std::ostream &os, DumpFlag flag);
 private:
+            std::unordered_map<std::string, std::string> entries;
 };
 
 class ChainedMap : public Map {
 public:
+            ChainedMap(size_t size=DEFAULT_TABLE_SIZE, double load_factor=DEFAULT_LOAD_FACTOR)
+                : entries(new std::map<std::string, std::string>[size] ), size(size), load_factor(load_factor) {};
+            ~ChainedMap() { delete [] entries; };
             void            insert(const std::string &key, const std::string &value);
             const Entry     search(const std::string &key);
             void            dump(std::ostream &os, DumpFlag flag);
 
 private:
             void            resize(const size_t new_size);
+            std::map<std::string, std::string>* entries;
+            size_t          size;
+            double          load_factor;
+            size_t          items;
+            StringHasher    hfunc;
 };
 
 class OpenMap : public Map {
