@@ -130,13 +130,20 @@ private:
 
 class OpenMap : public Map {
 public:
+            OpenMap(size_t size=DEFAULT_TABLE_SIZE, double load_factor=DEFAULT_LOAD_FACTOR);
+            ~OpenMap();
             void            insert(const std::string &key, const std::string &value);
             const Entry     search(const std::string &key);
             void            dump(std::ostream &os, DumpFlag flag);
-
+            
 private:
             size_t          locate(const std::string &key);
             void            resize(const size_t new_size);
+            Entry *table;
+            size_t size;
+            double load_factor;
+            size_t items;
+            StringHasher hfunc;
 };
 
 // vim: set sts=4 sw=4 ts=8 expandtab ft=cpp:
