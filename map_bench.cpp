@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cstring>
 
 #include <strings.h>
 #include <unistd.h>
@@ -42,6 +43,22 @@ void parse_command_line_options(int argc, char *argv[], Map *&map, int &nitems, 
                     map = new RBTreeMap();
                 } else if (strcasecmp(optarg, "treap") == 0) {
                     map = new TreapMap();
+                } else if (strcasecmp(optarg, "unordered") == 0) {
+                    map = new UnorderedMap();
+                } else if (strncasecmp(optarg, "chained", (size_t) 7) == 0) {
+                    double lf = DEFAULT_LOAD_FACTOR; 
+                    char* end;
+                    if( std::strlen(optarg) > 7 ){
+                        lf = std::strtod(optarg+8, &end);
+                    }
+                    map = new ChainedMap(DEFAULT_TABLE_SIZE,lf);
+                } else if (strncasecmp(optarg, "open", (size_t) 4) == 0) {
+                    double lf = DEFAULT_LOAD_FACTOR;
+                    char* end;
+                    if( std::strlen(optarg) > 4 ){
+                        lf = std::strtod(optarg+5, &end);
+                    }
+                    map = new OpenMap(DEFAULT_TABLE_SIZE, lf);
                 } else {
                     usage(1);
                 }
