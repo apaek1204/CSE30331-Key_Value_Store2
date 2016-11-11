@@ -51,16 +51,20 @@ void OpenMap::dump(std::ostream &os, DumpFlag flag) {
         
         switch(flag){
             case(DUMP_KEY):
-                os << table[i].first;
+                if(table[i]!=NONE)
+                    os << table[i].first;
                 break;
             case(DUMP_VALUE):
-                os << table[i].second;
+                if(table[i] !=NONE)
+                    os << table[i].second;
                 break;
             case(DUMP_KEY_VALUE):
-                os << table[i].first << "\t\t" << table[i].second;
+                if(table[i] != NONE)
+                    os << table[i].first << "\t\t" << table[i].second;
                 break;
             case(DUMP_VALUE_KEY):
-                os << table[i].second << "\t\t" << table[i].first;
+                if(table[i] != NONE)
+                    os << table[i].second << "\t\t" << table[i].first;
                 break;
         }
         os << std:: endl;
