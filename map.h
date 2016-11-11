@@ -124,7 +124,7 @@ private:
             std::map<std::string, std::string>* entries;
             size_t          size;
             double          load_factor;
-            size_t          items;
+            size_t          items=0;
             StringHasher    hfunc;
 };
 
