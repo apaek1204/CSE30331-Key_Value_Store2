@@ -20,7 +20,7 @@ typedef std::chrono::high_resolution_clock  Clock;
 
 void usage(int status) {
     std::cout << "usage: map_bench" << std::endl
-              << "    -b BACKEND    Which Map backend (unsorted, sorted, bst, rbtree, treap)" << std::endl
+              << "    -b BACKEND    Which Map backend (unsorted, sorted, bst, rbtree, treap, unordered, chained, open)" << std::endl
               << "    -n NITEMS     Number of items to benchmark" << std::endl
               << "    -p PADLENGTH  Amount to pad the keys with leading 0's" << std::endl;
 
