@@ -8,7 +8,7 @@
 // Methods --------------------------------------------------------------------
 
 void            ChainedMap::insert(const std::string &key, const std::string &value) {
-    if( (float)(items/size) > load_factor ){
+    if( ((float)items/size) > load_factor ){
         resize(size * 2);
     }
     int place = hfunc(key);
@@ -67,6 +67,7 @@ void            ChainedMap::resize(const size_t new_size) {
             insert(m.first, m.second);
         }
     }
+    delete [] old_entries;
 }
 
 // vim: set sts=4 sw=4 ts=8 expandtab ft=cpp:
