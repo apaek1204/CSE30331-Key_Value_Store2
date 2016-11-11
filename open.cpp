@@ -7,7 +7,6 @@ using namespace std;
 // Methods --------------------------------------------------------------------
 
 OpenMap::OpenMap(size_t s, double lf){
-    cout << "lf: " << lf << endl;
     items =0;   
     size=0;
     load_factor = lf;
@@ -93,8 +92,6 @@ size_t OpenMap::locate(const std::string &key) {
 }
 
 void OpenMap::resize(const size_t new_size) {
-    //cout << "new size: " << new_size << endl;
-    //cout << "size: " << size << endl;
     Entry *old_table=table;
     
     delete [] table;
