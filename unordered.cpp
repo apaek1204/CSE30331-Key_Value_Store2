@@ -35,10 +35,10 @@ void            UnorderedMap::dump(std::ostream &os, DumpFlag flag) {
                 os << i->second;
                 break;
             case DUMP_KEY_VALUE:
-                os << i->first << "\t\t" << i->second;
+                os << i->first << "\t" << i->second;
                 break;
             case DUMP_VALUE_KEY:
-                os << i->second << "\t\t" << i->first;
+                os << i->second << "\t" << i->first;
                 break;
         }
         os << std::endl;
