@@ -17,7 +17,7 @@ OpenMap::~OpenMap(){
     delete [] table;   
 }
 void OpenMap::insert(const std::string &key, const std::string &value) {
-    
+    //cout << "in insert" << endl;
     if((double)(items/size) > load_factor){
         resize(size *2);
     }
@@ -32,21 +32,18 @@ void OpenMap::insert(const std::string &key, const std::string &value) {
     else{
         table[bucket] = pair<string, string>(key, value);
     }
+    //table[bucket] = Entry(key, value);
     items ++;
 }
 
-const Entry OpenMap::search(const std::string &key) {
-    for(size_t i=0; i<size; i++){
-        if(table[i]!=NONE){
-            if(table[i].first == key){
-                return table[i];
-            }
-        }
-    }
-    return NONE;
+const Entry OpenMap::search(const std::string &key) { 
+    size_t bucket = locate(key);
+    return table[bucket];
+    //return NONE;
 }
 
 void OpenMap::dump(std::ostream &os, DumpFlag flag) {
+    //cout << "in dump " << endl;
     for(size_t i=0; i<size; i++){
         
         switch(flag){
@@ -67,47 +64,43 @@ void OpenMap::dump(std::ostream &os, DumpFlag flag) {
                     os << table[i].second << "\t" << table[i].first;
                 break;
         }
-        os << std:: endl;
+        if(table[i] != NONE)
+            os << std:: endl;
     }
 }
 
 size_t OpenMap::locate(const std::string &key) {
+    //cout << "in locate " << endl;
     size_t bucket = hfunc(key);
     bucket = bucket % size;
-    
-    if(table[bucket]==NONE || table[bucket].first == key){
-        return bucket;
-    }
-    else{
-        int i = bucket;
-        //increment till find key or find empty bucket
-        while(table[i]!=NONE){
-            i++;
-            i = i % size;
-            if(table[i].first == key){
-                return i;
-            }
+    size_t i=0; 
+    while(table[bucket]!=NONE && table[bucket].first!=key){
+        bucket = (bucket+1) %size;
+        i++;
+        if(i==size){
+            resize(size*2);
+            return locate(key);
         }
-        return i;
     }
-    //if out here, then no empty buckets, so resize and then recall function
-    resize(size * 2);
-    return locate(key);
+        
+    return bucket;
 }
 
 void OpenMap::resize(const size_t new_size) {
-    Entry *old_table=table;
-    
+    //cout << "in resize" << endl;
+    size_t old_size = size;
+    size = new_size;
+    Entry *old_table = new Entry[old_size];
+    copy(table, table+old_size, old_table);
     delete [] table;
     table = new Entry[new_size];
-    if(items){
-        for(size_t i=0; i<size; i++){
-            if(old_table[i]!=NONE){
-                insert(old_table[i].first, old_table[i].second);
-            }
+    for(size_t i=0; i<old_size; i++){
+        if(old_table[i]!=NONE){
+            insert(old_table[i].first, old_table[i].second);
         }
     }
-    size = new_size;
+    
+    delete [] old_table;
 }
 
 // vim: set sts=4 sw=4 ts=8 expandtab ft=cpp:
